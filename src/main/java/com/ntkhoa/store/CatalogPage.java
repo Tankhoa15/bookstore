@@ -3,7 +3,7 @@ package com.ntkhoa.store;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,11 +17,11 @@ public class CatalogPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		List<Product> previousItems = (ArrayList<Product>) session.getAttribute("previousItems");
-		if (previousItems == null) {
-			previousItems = new ArrayList();
-			session.setAttribute("previousItems", previousItems);
+		HttpSession session = request.getSession();	
+		Map<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
+		if (cart == null) {
+			cart = new HashMap<>();
+			session.setAttribute("cart", cart);
 		}
 		
 		List<Product> products = new ArrayList<>();

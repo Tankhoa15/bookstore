@@ -17,18 +17,30 @@ public class OrderPage extends HttpServlet {
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		List<Product> cart = (ArrayList<Product>) session.getAttribute("cart");
+		Map<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
 		if (cart == null) {
-			cart = new ArrayList<>();
+			cart = new HashMap<>();
 			session.setAttribute("cart", cart);
 		}
 
 		String productId = request.getParameter("productId");
-		Product product = getProductById(productId);
-		if (product != null) {
-			cart.add(product);
-		}
+        String action = request.getParameter("action");
 
+        if (productId != null && !productId.isEmpty()) {
+            if (action != null && !action.isEmpty()) {
+                int quantity = cart.getOrDefault(productId, 0);
+                if (action.equals("decrease")) { 
+                    if (quantity > 0) {
+                        cart.put(productId, quantity - 1);
+                    }
+                } else if (action.equals("increase")) {
+                    cart.put(productId, quantity + 1); 
+                }
+            } else { 
+                cart.put(productId, cart.getOrDefault(productId, 0) + 1);
+            }
+        }
+        
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.println("<!DOCTYPE html>");
@@ -38,17 +50,56 @@ public class OrderPage extends HttpServlet {
 		out.println("</head>");
 		out.println("<body>");
 		out.println("<h1>Your Cart</h1>");
-		out.println("<ul>");
-		for (Product productInCart : cart) {
-			out.println("<li>" + productInCart.getName() + " - $" + productInCart.getPrice() + "</li>");
+		out.println("<table>");
+		out.println("<tr><th>ID</th><th>Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>");
+		double total = 0;
+		for (Map.Entry<String, Integer> entry : cart.entrySet()) {
+			String productIdInCart = entry.getKey();
+			int quantity = entry.getValue();
+			Product productInCart = getProductById(productIdInCart);
+			if (productInCart != null) {
+                double price = productInCart.getPrice();
+                double subTotal = price * quantity;
+                total += subTotal;
+                out.println("<tr><td>" + productInCart.getId() + "</td><td>" + productInCart.getName() + "</td><td>");
+                out.println("<form action=\"cart\" method=\"post\">");
+                out.println("<input type=\"hidden\" name=\"productId\" value=\"" + productIdInCart + "\">");
+                out.println("<input type=\"hidden\" name=\"action\" value=\"decrease\">");
+                out.println("<input type=\"submit\" value=\"-\">");
+                out.println("</form>");
+                out.println(quantity);
+                out.println("<form action=\"cart\" method=\"post\">");
+                out.println("<input type=\"hidden\" name=\"productId\" value=\"" + productIdInCart + "\">");
+                out.println("<input type=\"hidden\" name=\"action\" value=\"increase\">");
+                out.println("<input type=\"submit\" value=\"+\">");
+                out.println("</form>");
+                out.println("</td><td>" + price + "</td><td>" + subTotal + "</td></tr>");
+            }
 		}
-		out.println("</ul>");
+		out.println("</table>");
+		out.println("<h2>Total: " + total + "</h2>");
+		out.println("<form action=\"checkout\" method=\"post\">");
+		out.println("<input type=\"submit\" value=\"Checkout\">");
+		out.println("</form>");
+		out.println("<form action=\"catalog-page\" method=\"get\">");
+		out.println("<input type=\"submit\" value=\"Back to Catalog\">");
+		out.println("</form>");
 		out.println("</body>");
 		out.println("</html>");
 	}
 
 	private Product getProductById(String productId) {
-		
+		List<Product> products = new ArrayList<>();
+		products.add(new Product("book001", "Java Programming", 49.99,"Information Technology","rgerh"));
+		products.add(new Product("book002", "Python for Beginners", 39.99,"information technology","rjyjty"));
+		products.add(new Product("book003", "HTML & CSS Mastery", 29.99,"information technology","jtt7"));
+
+		for (Product product : products) {
+			if (product.getId().equals(productId)) {
+				return product;
+			}
+		}
+
 		return null;
 	}
 
