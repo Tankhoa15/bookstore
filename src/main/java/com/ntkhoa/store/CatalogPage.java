@@ -53,6 +53,4 @@ public class CatalogPage extends HttpServlet {
         out.println("</body>");
         out.println("</html>");		 	
 	}
-	
-	
 }
