@@ -47,6 +47,7 @@ public class OrderPage extends HttpServlet {
 		out.println("<html>");
 		out.println("<head>");
 		out.println("<title>Cart</title>");
+		out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">");
 		out.println("</head>");
 		out.println("<body>");
 		out.println("<h1>Your Cart</h1>");
@@ -86,8 +87,10 @@ public class OrderPage extends HttpServlet {
 		out.println("</form>");
 		out.println("</body>");
 		out.println("</html>");
+	
 	}
 
+	
 	private Product getProductById(String productId) {
 		List<Product> products = new ArrayList<>();
 		products.add(new Product("book001", "Java Programming", 49.99,"Information Technology","rgerh"));
