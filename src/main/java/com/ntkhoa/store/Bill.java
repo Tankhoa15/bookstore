@@ -3,14 +3,12 @@ package com.ntkhoa.store;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 
 @WebServlet("/checkout")
 public class Bill extends HttpServlet {
@@ -20,18 +18,15 @@ public class Bill extends HttpServlet {
         HttpSession session = request.getSession();
         Map<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
 
-        // Kiểm tra xem giỏ hàng có rỗng hay không
+        // check cart
         if (cart == null || cart.isEmpty()) {
-            // Nếu giỏ hàng rỗng, chuyển hướng người dùng trở lại trang giỏ hàng hoặc thông báo giỏ hàng trống
             response.sendRedirect("cart");
             return;
         }
 
-        // Hiển thị hóa đơn
         displayBill(request, response, cart);
     }
 
-    // Phương thức hiển thị hóa đơn
     private void displayBill(HttpServletRequest request, HttpServletResponse response, Map<String, Integer> cart) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -63,8 +58,6 @@ public class Bill extends HttpServlet {
     }
 
     private Product getProductById(String productId) {
-        // Lấy thông tin sản phẩm từ cơ sở dữ liệu hoặc danh sách sản phẩm đã cung cấp
-        // Đây là ví dụ giả định, bạn cần thay thế bằng cách thực sự lấy dữ liệu
         List<Product> products = new ArrayList<>();
         products.add(new Product("book001", "Java Programming", 49.99,"Information Technology","rgerh"));
         products.add(new Product("book002", "Python for Beginners", 39.99,"information technology","rjyjty"));
@@ -75,7 +68,6 @@ public class Bill extends HttpServlet {
                 return product;
             }
         }
-
         return null;
     }
 }

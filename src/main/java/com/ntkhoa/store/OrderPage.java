@@ -87,9 +87,7 @@ public class OrderPage extends HttpServlet {
 		out.println("</form>");
 		out.println("</body>");
 		out.println("</html>");
-	
 	}
-
 	
 	private Product getProductById(String productId) {
 		List<Product> products = new ArrayList<>();
@@ -102,7 +100,6 @@ public class OrderPage extends HttpServlet {
 				return product;
 			}
 		}
-
 		return null;
 	}
 
