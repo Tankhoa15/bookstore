@@ -1,0 +1,40 @@
+body {
+	font-family: Arial, sans-serif;
+}
+
+.book {
+	border: 1px solid #333;
+	margin: 20px;
+	padding: 10px;
+	width: 200px;
+	height: 300px;
+	float: left;
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.book h3 {
+	font-size: 20px;
+	margin: 0;
+}
+
+.book p {
+	font-size: 16px;
+	margin: 10px 0;
+}
+
+.book form {
+	margin-top: 10px;
+}
+
+.book input[type='submit'] {
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	padding: 10px 24px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}

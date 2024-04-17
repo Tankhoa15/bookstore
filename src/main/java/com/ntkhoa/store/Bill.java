@@ -34,6 +34,7 @@ public class Bill extends HttpServlet {
         out.println("<html>");
         out.println("<head>");
         out.println("<title>Bill</title>");
+        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"bill.css\">");
         out.println("</head>");
         out.println("<body>");
         out.println("<h1>Bill</h1>");
@@ -59,9 +60,14 @@ public class Bill extends HttpServlet {
 
     private Product getProductById(String productId) {
         List<Product> products = new ArrayList<>();
-        products.add(new Product("book001", "Java Programming", 49.99,"Information Technology","rgerh"));
-        products.add(new Product("book002", "Python for Beginners", 39.99,"information technology","rjyjty"));
-        products.add(new Product("book003", "HTML & CSS Mastery", 29.99,"information technology","jtt7"));
+        products.add(new Product("book001", "Java Programming", 49.25,"Java","java 8"));
+        products.add(new Product("book002", "Python for Beginners", 39.05,"Python","python 3"));
+        products.add(new Product("book003", "HTML & CSS Mastery", 50,"Frontend","HTML 5 - CSS 3"));
+        products.add(new Product("book004", "Spring Boot Tutorial", 100,"Java","spring framework"));
+        products.add(new Product("book005", "Spring Data JPA", 99,"Java","spring boot"));
+        products.add(new Product("book006", "JDBC tutorial", 79.50,"Java","java code with database"));
+        products.add(new Product("book007", "Deep Learning", 200,"Data Science","Machine Learning Specialization"));
+        products.add(new Product("book008", "NodeJs", 60,"Backend","javascript"));
 
         for (Product product : products) {
             if (product.getId().equals(productId)) {

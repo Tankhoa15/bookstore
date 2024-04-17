@@ -18,6 +18,7 @@ public class CatalogPage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();	
+		session.removeAttribute("lastAddedProduct");
 		Map<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
 		if (cart == null) {
 			cart = new HashMap<>();
@@ -25,16 +26,24 @@ public class CatalogPage extends HttpServlet {
 		}
 		
 		List<Product> products = new ArrayList<>();
-        products.add(new Product("book001", "Java Programming", 49.99,"Information Technology","rgerh"));
-        products.add(new Product("book002", "Python for Beginners", 39.99,"information technology","rjyjty"));
-        products.add(new Product("book003", "HTML & CSS Mastery", 29.99,"information technology","jtt7"));
-		
+        products.add(new Product("book001", "Java Programming", 49.25,"Java","java 8"));
+        products.add(new Product("book002", "Python for Beginners", 39.05,"Python","python 3"));
+        products.add(new Product("book003", "HTML & CSS Mastery", 50,"Frontend","HTML 5 - CSS 3"));
+        products.add(new Product("book004", "Spring Boot Tutorial", 100,"Java","spring framework"));
+        products.add(new Product("book005", "Spring Data JPA", 99,"Java","spring boot"));
+        products.add(new Product("book006", "JDBC tutorial", 79.50,"Java","java code with database"));
+        products.add(new Product("book007", "Deep Learning", 200,"Data Science","Machine Learning Specialization"));
+        products.add(new Product("book008", "NodeJs", 60,"Backend","javascript"));
+       	
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String docType = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 " + "Transitional//EN\">\n";
-		out.println(docType + "<HTML>\n" +
-			"<HEAD><TITLE></TITLE></HEAD>\n" +
-		    "<BODY BGCOLOR=\"#FDF5E6\">\n");		  
+		out.println("<!DOCTYPE html>");
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<title>Home</title>");
+		out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"main.css\">");
+		out.println("</head>");
+		out.println("<body>");
 		out.println("<ul>");
 		for (Product product : products) {
 		    out.println("<div class='book'>");

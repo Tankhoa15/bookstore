@@ -25,23 +25,29 @@ public class OrderPage extends HttpServlet {
 
 		String productId = request.getParameter("productId");
         String action = request.getParameter("action");
+        
+        String lastAddedProduct = (String) session.getAttribute("lastAddedProduct");
 
         if (productId != null && !productId.isEmpty()) {
             if (action != null && !action.isEmpty()) {
                 int quantity = cart.getOrDefault(productId, 0);
                 if (action.equals("decrease")) { 
-                    if (quantity > 0) {
+                    if (quantity > 1) {
                         cart.put(productId, quantity - 1);
+                    }
+                    else if (quantity == 1) {
+                        cart.remove(productId);
                     }
                 } else if (action.equals("increase")) {
                     cart.put(productId, quantity + 1); 
                 }
-            } else { 
+            } else if (!productId.equals(lastAddedProduct)) { 
                 cart.put(productId, cart.getOrDefault(productId, 0) + 1);
+                session.setAttribute("lastAddedProduct", productId);
             }
         }
         
-		response.setContentType("text/html");
+      	response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.println("<!DOCTYPE html>");
 		out.println("<html>");
@@ -86,14 +92,19 @@ public class OrderPage extends HttpServlet {
 		out.println("<input type=\"submit\" value=\"Back to Catalog\">");
 		out.println("</form>");
 		out.println("</body>");
-		out.println("</html>");
+		out.println("</html>");		      
 	}
 	
 	private Product getProductById(String productId) {
 		List<Product> products = new ArrayList<>();
-		products.add(new Product("book001", "Java Programming", 49.99,"Information Technology","rgerh"));
-		products.add(new Product("book002", "Python for Beginners", 39.99,"information technology","rjyjty"));
-		products.add(new Product("book003", "HTML & CSS Mastery", 29.99,"information technology","jtt7"));
+        products.add(new Product("book001", "Java Programming", 49.25,"Java","java 8"));
+        products.add(new Product("book002", "Python for Beginners", 39.05,"Python","python 3"));
+        products.add(new Product("book003", "HTML & CSS Mastery", 50,"Frontend","HTML 5 - CSS 3"));
+        products.add(new Product("book004", "Spring Boot Tutorial", 100,"Java","spring framework"));
+        products.add(new Product("book005", "Spring Data JPA", 99,"Java","spring boot"));
+        products.add(new Product("book006", "JDBC tutorial", 79.50,"Java","java code with database"));
+        products.add(new Product("book007", "Deep Learning", 200,"Data Science","Machine Learning Specialization"));
+        products.add(new Product("book008", "NodeJs", 60,"Backend","javascript"));
 
 		for (Product product : products) {
 			if (product.getId().equals(productId)) {
