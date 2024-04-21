@@ -18,7 +18,6 @@ public class CatalogPage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();	
-		session.removeAttribute("lastAddedProduct");
 		Map<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
 		if (cart == null) {
 			cart = new HashMap<>();

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/cart")
 public class OrderPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+    	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Map<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
@@ -25,29 +25,32 @@ public class OrderPage extends HttpServlet {
 
 		String productId = request.getParameter("productId");
         String action = request.getParameter("action");
-        
-        String lastAddedProduct = (String) session.getAttribute("lastAddedProduct");
 
         if (productId != null && !productId.isEmpty()) {
+            int quantity = cart.getOrDefault(productId, 0);
             if (action != null && !action.isEmpty()) {
-                int quantity = cart.getOrDefault(productId, 0);
                 if (action.equals("decrease")) { 
                     if (quantity > 1) {
                         cart.put(productId, quantity - 1);
-                    }
-                    else if (quantity == 1) {
+                    } else if (quantity == 1) {
                         cart.remove(productId);
                     }
                 } else if (action.equals("increase")) {
                     cart.put(productId, quantity + 1); 
                 }
-            } else if (!productId.equals(lastAddedProduct)) { 
-                cart.put(productId, cart.getOrDefault(productId, 0) + 1);
-                session.setAttribute("lastAddedProduct", productId);
+            } else { 
+                cart.put(productId, quantity + 1);
             }
         }
         
-      	response.setContentType("text/html");
+        // Redirect using GET
+        response.sendRedirect(request.getContextPath() + "/cart");
+	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Map<String, Integer> cart = (HashMap<String, Integer>) session.getAttribute("cart");
+		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.println("<!DOCTYPE html>");
 		out.println("<html>");
@@ -92,7 +95,7 @@ public class OrderPage extends HttpServlet {
 		out.println("<input type=\"submit\" value=\"Back to Catalog\">");
 		out.println("</form>");
 		out.println("</body>");
-		out.println("</html>");		      
+		out.println("</html>");	
 	}
 	
 	private Product getProductById(String productId) {
