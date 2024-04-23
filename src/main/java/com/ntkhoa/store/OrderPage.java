@@ -92,7 +92,7 @@ public class OrderPage extends HttpServlet {
 		out.println("<input type=\"submit\" value=\"Checkout\">");
 		out.println("</form>");
 		out.println("<form action=\"catalog-page\" method=\"get\">");
-		out.println("<input type=\"submit\" value=\"Back to Catalog\">");
+		out.println("<input type=\"submit\" value=\"Back to Home\">");
 		out.println("</form>");
 		out.println("</body>");
 		out.println("</html>");	
